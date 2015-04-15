@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html ng-app="solarApp">
+	<head>
+		<title>Solar Angle Calculator</title>
+		<meta name="author" content="Darren Cattle"/>
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+		<script type="text/javascript" src="js/angular.js"/></script>
+		<script type="text/javascript" src="js/app.js"/></script>
+		<script type="text/javascript" src="js/d3.min.js"/></script>
+		<script type="text/javascript" src="js/angular-charts.min.js"></script>
+
+	</head>
+	<style>
+	.chart {
+    height: 500px;
+    width: 100%;
+	}
+	</style>
+	<body class="container" ng-controller="solarController as solar">
+		<heading class="text-center">
+			<h1>Solar Angle Calculator</h1>
+			<h2>by Darren Cattle</h2>
+			<h3>Commentary</h3><h5>Zenith is the angle the sun makes relative to horizontal ground, 90 degrees is straight up vertically and 0 means horizon line (sunset/sunrise). Therefore, usually around solar noon (12:00), zenith will be at it's maximum value for a day. Azimuth is an angular measurement of direction relative to North going clockwise. 0 = North, 90 = East, 180 = South, 270 = West.</h5>
+			<h3>Variables</h3>
+			<form name="calculateForm" ng-submit="solar.calculate(lat, day)">
+				<h5 class="pull-left">Latitude</h5><br><br>
+				<fieldset class="form-group">
+	            	<textarea ng-model="lat" class="form-control" placeholder="Pick a latitude between -90 and 90." title="Latitude"></textarea>
+	            </fieldset>
+	            <h5 class="pull-left">Day</h5><br><br>
+				<fieldset class="form-group">
+	            	<textarea ng-model="day" class="form-control" placeholder="Select the day of the year from 0 to 365." title="Day"></textarea>
+	            </fieldset>
+	            <fieldset class="form-group">
+	            	<input type="submit" class="btn btn-primary pull-center" value="Calculate!"/>
+	            </fieldset>
+	        </form>
+			<h3>Results</h3>
+		</heading>
+		<div 
+			ac-chart="'line'" 
+			ac-data="solar.dat" 
+			ac-config="solar.config" 
+			class='chart'></div>
+	    <table class="table table-striped">
+			<thead><tr>
+			    <th>Time</th>
+			    <th>Azimuth</th>
+			    <th>Zenith</th>
+			</tr></thead>
+			<tbody><tr ng-repeat="minutes in solar.minutes">
+				<td>{{minutes.time}}</td>
+				<td>{{minutes.azimuth | number:2}}&deg;</td>
+				<td>{{minutes.zenith  | number:2}}&deg;</td>
+			</tr></tbody>
+		</table>
+	</body>
+</html>
